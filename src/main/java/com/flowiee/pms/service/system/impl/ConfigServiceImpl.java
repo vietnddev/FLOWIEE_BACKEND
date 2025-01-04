@@ -74,7 +74,7 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
             List<SystemConfig> systemConfigList = this.findAll();
             Core.mvSystemConfigList.clear();
             for (SystemConfig systemConfig : systemConfigList) {
-                ConfigCode lvConfigCode = ConfigCode.valueOf(systemConfig.getCode());
+                ConfigCode lvConfigCode = ConfigCode.get(systemConfig.getCode());
                 String lvConfigValue = systemConfig.getValue();
 
                 if (lvConfigCode == null) continue;

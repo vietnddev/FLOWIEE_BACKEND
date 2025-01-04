@@ -34,7 +34,7 @@ public class CommonUtils {
     public static ServerInfo mvServerInfo;
     public static final String productID = "SMS";
     public static String defaultCountryCode = "VN";
-    public static String defaultNewPassword;
+    public static String defaultNewPassword = "123456";
 
     public static String formatToVND(Object currency) {
         @SuppressWarnings("deprecation")
@@ -85,6 +85,9 @@ public class CommonUtils {
                 case STORAGE:
                     path.append("storage");
                     break;
+                case SALES:
+                    path.append("sales");
+                    break;
                 default:
                 	path.append("system");
                 	break;
@@ -95,7 +98,7 @@ public class CommonUtils {
             File folder = new File(path.toString());
             if (!folder.exists()) {
                 if (folder.mkdirs()) {
-                    System.out.println("mkdirs OK");
+                    System.out.println("mkdirs OK " + folder.getAbsolutePath());
                 }
             }
             return path.toString();
@@ -114,6 +117,8 @@ public class CommonUtils {
                 path.append("category");
             } else if (MODULE.STORAGE.name().equals(systemModule)) {
                 path.append("storage");
+            } else if (MODULE.SALES.name().equals(systemModule)) {
+                path.append("sales");
             } else if ("data-temp".equals(systemModule)) {
                 path.append("data-temp");
             }
@@ -123,7 +128,7 @@ public class CommonUtils {
             File folder = new File(path.toString());
             if (!folder.exists()) {
                 if (folder.mkdirs()) {
-                    System.out.println("mkdirs OK");
+                    System.out.println("mkdirs OK " + folder.getAbsolutePath());
                 }
             }
             return path.toString();
@@ -186,5 +191,9 @@ public class CommonUtils {
             }
         }
         return null;
+    }
+
+    public static String getServerURL() {
+        return "http://" + CommonUtils.mvServerInfo.ip() + ":" + CommonUtils.mvServerInfo.port();
     }
 }

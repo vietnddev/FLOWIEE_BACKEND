@@ -8,6 +8,7 @@ import com.flowiee.pms.model.dto.OrderDTO;
 import com.flowiee.pms.exception.AppException;
 import com.flowiee.pms.model.payload.CreateOrderReq;
 import com.flowiee.pms.service.ExportService;
+import com.flowiee.pms.service.sales.OrderPayService;
 import com.flowiee.pms.service.sales.OrderService;
 import com.flowiee.pms.utils.constants.ErrorCode;
 import com.flowiee.pms.utils.constants.OrderStatus;
@@ -27,6 +28,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -43,6 +45,7 @@ public class OrderController extends BaseController {
     @NonFinal
     @Qualifier("orderExportServiceImpl")
     ExportService mvExportService;
+    OrderPayService mvOrderPayService;
 
     @Operation(summary = "Find all orders")
     @GetMapping("/all")
@@ -107,10 +110,10 @@ public class OrderController extends BaseController {
     public AppResponse<String> doPayOrder(@PathVariable("orderId") Long orderId,
                                           @RequestParam(value = "paymentTime", required = false) String paymentTime,
                                           @RequestParam("paymentMethod") Long paymentMethod,
-                                          @RequestParam("paymentAmount") Float paymentAmount,
+                                          @RequestParam("paymentAmount") BigDecimal paymentAmount,
                                           @RequestParam(value = "paymentNote", required = false) String paymentNote) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a");
-        return success(mvOrderService.doPay(orderId, LocalDateTime.parse(paymentTime, formatter), paymentMethod, paymentAmount, paymentNote));
+        return success(mvOrderPayService.doPay(orderId, LocalDateTime.parse(paymentTime, formatter), paymentMethod, paymentAmount, paymentNote));
     }
 
     @GetMapping("/export")

@@ -26,13 +26,14 @@ public enum ConfigCode {
     sendNotifyAdminExceptionRuntime("Gửi email thông báo đến Admin khi có sự cố hệ thống", "N"),
     shopAddress("Địa chỉ", "Phường 7, Quận 8, Thành phố Hồ Chí Minh"),
     shopEmail("Email", "nguyenducviet0684@gmail.com"),
-    shopLogoUrl("Logo", null),
+    shopLogoUrl("Logo", "src/main/resources/static/dist/img/FlowieeLogo.png"),
     shopName("Tên cửa hàng", "Flowiee"),
     shopPhoneNumber("Số điện thoại", "(+84) 706 820 684"),
     sysTimeOut("Thời gian timeout", "3600"),
     tokenResetPasswordValidityPeriod("Thông gian hiệu lực của token đổi mật khẩu (phút)", "60"),
     generateNewPasswordDefault("Mật khẩu mặc định", "123456"),
-    byPassLogin("Không kiểm tra mật khẩu khi đăng nhập", "Y");
+    passwordLength("Độ dài mật khẩu", "8"),
+    passwordValidityPeriod("Thời gian hiệu lực của mật khẩu (ngày)", "30");
 
     private String description;
     private String defaultValue;
@@ -40,5 +41,13 @@ public enum ConfigCode {
     ConfigCode(String description, String defaultValue) {
         this.description = description;
         this.defaultValue = defaultValue;
+    }
+
+    public static ConfigCode get(String pConfigCode) {
+        try {
+            return valueOf(pConfigCode);
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
     }
 }

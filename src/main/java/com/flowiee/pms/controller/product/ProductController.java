@@ -3,6 +3,7 @@ package com.flowiee.pms.controller.product;
 import com.flowiee.pms.controller.BaseController;
 import com.flowiee.pms.entity.product.Product;
 import com.flowiee.pms.entity.product.ProductHistory;
+import com.flowiee.pms.entity.product.ProductRelated;
 import com.flowiee.pms.exception.BadRequestException;
 import com.flowiee.pms.exception.ResourceNotFoundException;
 import com.flowiee.pms.model.AppResponse;
@@ -47,6 +48,7 @@ public class ProductController extends BaseController {
     ImportService mvImportService;
     ProductInfoService mvProductInfoService;
     ProductHistoryService mvProductHistoryService;
+    ProductRelatedService mvProductRelatedService;
 
     @Operation(summary = "Find all products")
     @GetMapping("/all")
@@ -130,5 +132,30 @@ public class ProductController extends BaseController {
     @PreAuthorize("@vldModuleProduct.insertProduct(true)")
     public void importData(@RequestParam("file") MultipartFile file) {
         mvImportService.importFromExcel(TemplateExport.IM_LIST_OF_PRODUCTS, file);
+    }
+
+    @Operation(summary = "Add related product")
+    @PostMapping("/{productId}/related/{relatedProductId}")
+    public AppResponse<String> addRelatedProduct(@PathVariable Long productId, @PathVariable Long relatedProductId) {
+        mvProductRelatedService.add(productId, relatedProductId);
+        return success("Related product added successfully!");
+    }
+
+    @Operation(summary = "Get related product")
+    @GetMapping("/{productId}/related")
+    public AppResponse<List<ProductRelated>> getRelatedProducts(@PathVariable Long productId) {
+        return success(mvProductRelatedService.get(productId));
+    }
+
+    @Operation(summary = "Delete related product")
+    @GetMapping("/related/{relationId}")
+    public AppResponse<String> removeRelatedProduct(@PathVariable Long relationId) {
+        mvProductRelatedService.remove(relationId);
+        return success("Related product deleted successfully!");
+    }
+
+    @GetMapping("/discontinued")
+    public AppResponse<List<ProductDTO>> getDiscontinuedProducts() {
+        return success(mvProductInfoService.getDiscontinuedProducts());
     }
 }

@@ -58,11 +58,16 @@ public class ProductAttributeServiceImpl extends BaseService implements ProductA
     }
 
     @Override
-    public ProductAttribute update(ProductAttribute attribute, Long attributeId) {
-        ProductAttribute attributeOptional = this.findById(attributeId, true);
+    public ProductAttribute update(ProductAttribute pAttribute, Long attributeId) {
+        ProductAttribute attribute = this.findById(attributeId, true);
         //enhance later
-        ProductAttribute attributeBefore = ObjectUtils.clone(attributeOptional);
-        attribute.setId(attributeId);
+        ProductAttribute attributeBefore = ObjectUtils.clone(attribute);
+
+        attribute.setAttributeName(pAttribute.getAttributeName());
+        attribute.setAttributeValue(pAttribute.getAttributeValue());
+        attribute.setSort(pAttribute.getSort());
+        attribute.setStatus(pAttribute.isStatus());
+
         ProductAttribute attributeUpdated = mvProductAttributeRepository.save(attribute);
 
         String logTitle = "Cập nhật thuộc tính sản phẩm";

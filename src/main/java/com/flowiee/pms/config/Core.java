@@ -169,7 +169,7 @@ public class Core {
 		initNewConfigIfDatabaseNotDefined(cnfList);
 
 		for (SystemConfig systemConfig : mvConfigRepository.findAll()) {
-			ConfigCode lvConfigCode = ConfigCode.valueOf(systemConfig.getCode());
+			ConfigCode lvConfigCode = ConfigCode.get(systemConfig.getCode());
 			if (lvConfigCode == null)
 				continue;
 			mvSystemConfigList.put(lvConfigCode, systemConfig);

@@ -23,6 +23,7 @@ public abstract class ScheduleExecutor extends BaseService {
 
     private ScheduleStatus mvScheduleStatus;
     private ScheduleTask mvScheduleTask;
+    protected boolean enableLog = false;
 
     public abstract void execute() throws AppException;
     public abstract void doProcesses() throws AppException;
@@ -47,7 +48,9 @@ public abstract class ScheduleExecutor extends BaseService {
         if (lvScheduleTask == null) {
             return;
         }
-        logger.info("Schedule task " + lvScheduleTask.name() + " start");
+        if (enableLog) {
+            logger.info("Schedule task " + lvScheduleTask.name() + " start");
+        }
         Optional<Schedule> schedule = scheduleRepository.findById(lvScheduleTask.name());
         if (schedule.isEmpty()) {
             throw new AppException(String.format("Schedule %s is not defined in the database!", lvScheduleTask.name()));
@@ -74,7 +77,9 @@ public abstract class ScheduleExecutor extends BaseService {
         lvScheduleStatus.setDuration(ChronoUnit.SECONDS.between(lvScheduleStatus.getStartTime(), lvScheduleStatus.getEndTime()) + " SECOND");
         lvScheduleStatus.setStatus(lvScheduleStatus.getErrorMsg() == null ? "success" : "fail");
         scheduleStatusRepository.save(lvScheduleStatus);
-        logger.info("Schedule task " + lvScheduleStatus.getSchedule().getScheduleId() + " end");
+        if (enableLog) {
+            logger.info("Schedule task " + lvScheduleStatus.getSchedule().getScheduleId() + " end");
+        }
     }
 
     protected void setErrorMsg(String pMessage) {

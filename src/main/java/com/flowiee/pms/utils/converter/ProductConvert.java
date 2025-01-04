@@ -39,6 +39,7 @@ public class ProductConvert {
         outputEntity.setId(inputDTO.getId());
         outputEntity.setCreatedAt(inputDTO.getCreatedAt());
         outputEntity.setCreatedBy(inputDTO.getCreatedBy());
+        outputEntity.setInternalNotes(inputDTO.getInternalNotes());
 
         return outputEntity;
     }
@@ -73,6 +74,7 @@ public class ProductConvert {
             dto.setCreatedBy(inputEntity.getCreatedBy());
 
             dto.setListImages(inputEntity.getListImages());
+            dto.setInternalNotes(inputEntity.getInternalNotes());
         }
         return dto;
     }

@@ -38,13 +38,12 @@
                     <div class="card" style="min-height: 605px">
                         <div class="card-body p-0" th:each="cart, cartIndex : ${listCart}">
                             <div class="row pl-1 pr-1">
-                                <div class="col-9">
-                                    <table class="table table-responsive text-nowrap" id="itemsTable">
+                                <div class="col-9 p-0">
+                                    <table class="table table-responsive table-head-fixed text-nowrap" style="height: 500px;" id="itemsTable">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th class="text-left">Tên sản phẩm</th>
-                                                <th>Loại giá</th>
                                                 <th>Giá bán</th>
                                                 <th>Giảm thêm</th>
                                                 <th>SL</th>
@@ -63,11 +62,16 @@
                                                        th:href="@{/san-pham/variant/{id}(id=${item.productDetail.id})}"></a>
                                                     <p class="font-italic" th:text="${item.note}"></p>
                                                 </td>
-                                                <td th:text="${item.priceType == 'L' ? 'Giá bán lẻ' : 'Giá sỉ'}"></td>
-                                                <td th:text="${item.price != null} ? ${#numbers.formatDecimal (item.price, 0, 'COMMA', 0, 'NONE')} + ' đ' : '-'"></td>
-                                                <td th:text="${item.extraDiscount != null} ? ${#numbers.formatDecimal(item.extraDiscount, 0, 'COMMA', 0, 'NONE')} + ' đ' : '-'"></td>
+                                                <td th:text="${item.price != null}
+                                                                ? ${#numbers.formatDecimal (item.price, 0, 'COMMA', 0, 'NONE')} + ' đ (' + ${item.priceType == 'L' ? 'Lẻ' : 'Sỉ'} + ')'
+                                                                : '-'"></td>
+                                                <td th:text="${item.extraDiscount != null}
+                                                                ? ${#numbers.formatDecimal(item.extraDiscount, 0, 'COMMA', 0, 'NONE')} + ' đ'
+                                                                : '-'"></td>
                                                 <td th:text="${item.quantity}"></td>
-                                                <td th:text="${item.price != null} ? ${#numbers.formatDecimal(item.price * item.quantity - item.extraDiscount, 0, 'COMMA', 0, 'NONE')} + ' đ' : '-'"></td>
+                                                <td th:text="${item.price != null}
+                                                                ? ${#numbers.formatDecimal(item.price * item.quantity - item.extraDiscount, 0, 'COMMA', 0, 'NONE')} + ' đ'
+                                                                : '-'"></td>
                                                 <td>
                                                     <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" th:data-target="'#modalUpdateItems_' + ${item.id}">Cập nhật</button>
                                                     <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" th:data-target="'#modalDeleteItems_' + ${item.id}">Xóa</button>
@@ -80,73 +84,69 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-3">
-                                    <div class="row mt-3">
-                                        <div class="form-group col-12">
-                                            <select class="custom-select" id="customerField" required>
-                                                <!--<option th:each="list : ${listCustomer}" th:value="${list.id}" th:text="${list.customerName}"></option>-->
-                                            </select>
-                                        </div>
+                                <div class="col-3 pl-3 pr-3">
+                                    <div class="form-group row mt-3" style="padding-right: 8px">
+                                        <label style="display: flex; align-items: center">Khách hàng</label>
+                                        <select class="custom-select" id="customerField" required>
+                                            <!--<option th:each="list : ${listCustomer}" th:value="${list.id}" th:text="${list.customerName}"></option>-->
+                                        </select>
                                     </div>
-                                    <hr class="w-75 mt-0">
-                                    <div class="row">
-                                        <div class="form-group col-sm-6">
-                                            <select class="custom-select" id="accountField" required>
-                                                <option th:each="list : ${listAccount}" th:value="${list.id}" th:text="${list.fullName}"></option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-sm-6">
-                                            <div class="input-group date" id="reservationdatetime"
-                                                 data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input"
-                                                       data-target="#reservationdatetime"
-                                                       id="orderTimeField"
-                                                       required/>
-                                                <div class="input-group-append"
-                                                     data-target="#reservationdatetime"
-                                                     data-toggle="datetimepicker">
-                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                                </div>
+                                    <div class="form-group row" style="padding-right: 8px">
+                                        <label style="display: flex; align-items: center">Nhân viên bán hàng</label>
+                                        <select class="custom-select" id="accountField" required>
+                                            <option th:each="list : ${listAccount}" th:value="${list.id}" th:text="${list.fullName}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group row" style="padding-right: 8px">
+                                        <label style="display: flex; align-items: center">Thời gian đặt hàng</label>
+                                        <div class="input-group date" id="reservationdatetime"
+                                             data-target-input="nearest">
+                                            <input type="text" class="form-control datetimepicker-input"
+                                                   data-target="#reservationdatetime"
+                                                   id="orderTimeField"
+                                                   required/>
+                                            <div class="input-group-append"
+                                                 data-target="#reservationdatetime"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <hr class="w-75 mt-0">
                                     <!--KÊNH BÁN HÀNG-->
                                     <div class="form-group row" style="padding-right: 8px">
-                                        <label class="col-sm-6" style="display: flex; align-items: center">Kênh bán hàng</label>
-                                        <select class="custom-select col-sm-6" id="salesChannelField" required>
+                                        <label style="display: flex; align-items: center">Kênh bán hàng</label>
+                                        <select class="custom-select" id="salesChannelField" required>
                                             <option th:each="list : ${listSalesChannel}" th:value="${list.id}" th:text="${list.name}"></option>
                                         </select>
                                     </div>
                                     <!--KÊNH BÁN HÀNG-->
                                     <!--HÌNH THỨC THANH TOÁN-->
                                     <div class="form-group row" style="padding-right: 8px">
-                                        <label class="col-sm-6" style="display: flex; align-items: center">Hình thức thanh toán</label>
-                                        <select class="custom-select col-sm-6" id="paymentMethodField" required>
+                                        <label style="display: flex; align-items: center">Hình thức thanh toán</label>
+                                        <select class="custom-select" id="paymentMethodField" required>
                                             <option th:each="list : ${listPaymentMethod}" th:value="${list.id}" th:text="${list.name}"></option>
                                         </select>
                                     </div>
                                     <!--HÌNH THỨC THANH TOÁN-->
                                     <!--TRẠNG THÁI ĐƠN HÀNG-->
                                     <div class="form-group row" style="padding-right: 8px">
-                                        <label class="col-sm-6" style="display: flex; align-items: center">Trạng thái đơn hàng</label>
+                                        <label style="display: flex; align-items: center">Trạng thái đơn hàng</label>
                                         <!--<select class="custom-select col-sm-6" id="orderStatusField" required>
                                             <option th:each="list : ${listOrderStatus}" th:value="${list.id}" th:text="${list.name}"></option>
                                         </select>-->
-                                        <select class="custom-select col-sm-6" id="orderStatusField">
+                                        <select class="custom-select" id="orderStatusField">
                                             <option th:each="d : ${orderStatusMap}" th:value="${d.key}" th:text="${d.value}"></option>
                                         </select>
                                     </div>
-                                    <hr class="w-75 mt-0">
                                     <div class="form-group row">
-                                        <label class="col-sm-6">
+                                        <label>
                                             Tổng tiền hàng
                                             <span class="badge badge-info" id="totalAmountWithoutDiscountField"
                                                   th:if="${cart.listItems.size() > 0}"
                                                   th:text="${cart.listItems.size()}"></span>
                                         </label>
 
-                                        <span class="col-sm-6 text-right"
+                                        <span class="text-right"
                                               th:text="${#numbers.formatDecimal (totalAmountWithoutDiscount, 0, 'COMMA', 0, 'NONE')} + ' đ'"></span>
                                     </div>
                                     <hr class="w-75">
@@ -161,8 +161,8 @@
                                     </div>
                                     <hr class="w-75">
                                     <div class="form-group row">
-                                        <label class="col-sm-6">Phải thu</label>
-                                        <label class="col-sm-6 text-right" id="totalAmountDiscountField"
+                                        <label>Phải thu</label>
+                                        <label class="text-right" id="totalAmountDiscountField"
                                                th:text="${#numbers.formatDecimal (totalAmountDiscount, 0, 'COMMA', 0, 'NONE')} + ' đ'"></label>
                                     </div>
                                     <hr class="w-75">

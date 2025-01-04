@@ -33,6 +33,11 @@ public class FileStorage extends BaseEntity implements Serializable {
     @Serial
 	static final long serialVersionUID = 1L;
 
+    public static final String QRCODE = "Q";
+    public static final String BARCODE = "B";
+    public static final String DOCUMENT = "D";
+    public static final String IMAGE = "I";
+
 	@Column(name = "customize_name")
     String customizeName;
 
@@ -57,6 +62,9 @@ public class FileStorage extends BaseEntity implements Serializable {
     @Column(name = "content")
     byte[] content;
 
+    @Column(name = "content_base_64")
+    String contentBase64;
+
     @Column(name = "directory_path", length = 500)
     String directoryPath;
 
@@ -68,6 +76,9 @@ public class FileStorage extends BaseEntity implements Serializable {
 
     @Column(name = "module", nullable = false)
     String module;
+
+    @Column(name = "file_type")
+    String fileType;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

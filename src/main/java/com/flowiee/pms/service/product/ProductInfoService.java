@@ -29,4 +29,6 @@ public interface ProductInfoService extends BaseCurdService<ProductDTO> {
     boolean productInUse(Long productId);
 
     List<ProductHeld> getProductHeldInUnfulfilledOrder();
+
+    List<ProductDTO> getDiscontinuedProducts();
 }

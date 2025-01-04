@@ -22,7 +22,7 @@ public class ProductAttribute extends BaseEntity implements Serializable {
     @Serial
 	static final long serialVersionUID = 1L;
 
-	@JsonIgnoreProperties("listThuocTinh")
+	@JsonIgnoreProperties("listAttributes")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_variant_id", nullable = false)
     ProductDetail productDetail;
@@ -48,7 +48,7 @@ public class ProductAttribute extends BaseEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ProductAttribute [id=" + super.id + ", productVariant=" + productDetail + ", tenThuocTinh=" + attributeName
-				+ ", giaTriThuocTinh=" + attributeValue + ", sort=" + sort + ", trangThai=" + status + "]";
+		return "ProductAttribute [id=" + super.id + ", productVariant=" + productDetail + ", attributeName=" + attributeName
+				+ ", attributeValue=" + attributeValue + ", sort=" + sort + ", status=" + status + "]";
 	}
 }

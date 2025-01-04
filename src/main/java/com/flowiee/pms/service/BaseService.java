@@ -19,6 +19,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
+
 @Component
 @FieldDefaults(level = AccessLevel.PROTECTED)
 public class BaseService {
@@ -46,6 +51,46 @@ public class BaseService {
             return false;
         }
         return true;
+    }
+
+    public LocalDateTime[] getFromDateToDate(LocalDateTime pFromDate, LocalDateTime pToDate, String pFilterDate) {
+        LocalDateTime lvStartTime = null;
+        LocalDateTime lvEndTime = null;
+
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfToDay = today.atTime(LocalTime.MIN);
+        LocalDateTime endOfToDay = today.atTime(LocalTime.MAX);
+
+        YearMonth yearMonth = YearMonth.of(today.getYear(), today.getMonthValue());
+        LocalDateTime startDayOfMonth = yearMonth.atDay(1).atTime(LocalTime.MIN);
+        LocalDateTime endDayOfMonth = yearMonth.atEndOfMonth().atTime(LocalTime.MAX);
+
+        switch (pFilterDate) {
+            case "T0": //Today
+                pFromDate = startOfToDay;
+                pToDate = endOfToDay;
+                break;
+            case "T-1": //Previous day
+                pFromDate = startOfToDay.minusDays(1);
+                pToDate = endOfToDay.minusDays(1);
+                break;
+            case "T-7": //7 days ago
+                pFromDate = startOfToDay.minusDays(7);
+                pToDate = endOfToDay;
+                break;
+            case "M0": //This month
+                pFromDate = startDayOfMonth;
+                pToDate = endDayOfMonth;
+                break;
+            case "M-1": //Previous month
+                pFromDate = startDayOfMonth.minusMonths(1);
+                pToDate = endDayOfMonth.minusMonths(1);
+        }
+
+        lvStartTime = pFromDate;
+        lvEndTime = pToDate;
+
+        return new LocalDateTime[] {lvStartTime, lvEndTime};
     }
 
     @Data

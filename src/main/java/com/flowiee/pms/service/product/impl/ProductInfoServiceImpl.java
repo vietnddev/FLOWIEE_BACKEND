@@ -24,9 +24,7 @@ import com.flowiee.pms.service.product.*;
 import com.flowiee.pms.service.sales.VoucherApplyService;
 import com.flowiee.pms.service.sales.VoucherService;
 import com.flowiee.pms.utils.converter.ProductConvert;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -144,7 +142,7 @@ public class ProductInfoServiceImpl extends BaseService implements ProductInfoSe
 
             systemLogService.writeLogCreate(MODULE.PRODUCT, ACTION.PRO_PRD_C, MasterObject.Product, "Thêm mới sản phẩm", product.getProductName());
             logger.info("Insert product success! {}", product);
-            return ProductConvert.convertToDTO(productSaved, productDescription.getDescription());
+            return ProductConvert.convertToDTO(productSaved, productDescription != null ? productDescription.getDescription() : null);
         } catch (RuntimeException ex) {
             throw new AppException(String.format(ErrorCode.CREATE_ERROR_OCCURRED.getDescription(), "product"), ex);
         }
@@ -251,6 +249,11 @@ public class ProductInfoServiceImpl extends BaseService implements ProductInfoSe
             }
         }
         return productHeldList;
+    }
+
+    @Override
+    public List<ProductDTO> getDiscontinuedProducts() {
+        return findAll(null, -1, -1, null, null, null, null, null, null, ProductStatus.I.name()).getContent();
     }
 
     private void setImageActiveAndLoadVoucherApply(List<ProductDTO> products) {

@@ -25,12 +25,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class FileUtils {
-    //public static String rootPath = "src/main/resources/static";
+    public static String resourceStaticPath = "src/main/resources/static";
     public static String fileUploadPath = Core.getResourceUploadPath() + "/uploads/";
     public static String initCsvDataPath = Core.getResourceUploadPath() + "/data/csv";
-    public static String reportTemplatePath = Core.getResourceUploadPath() + "/report";
-    public static String excelTemplatePath = Core.getResourceUploadPath() + "/templates/excel";
-    public static Path logoPath = Paths.get(Core.getResourceUploadPath() + "/dist/img/FlowieeLogo.png");
+    public static String reportTemplatePath = resourceStaticPath + "/report";
+    public static String excelTemplatePath = resourceStaticPath + "/templates/excel";
+    public static Path logoPath = Paths.get(resourceStaticPath + "/dist/img/FlowieeLogo.png");
 
     public static void createCellCombobox(XSSFWorkbook workbook, XSSFSheet sheet, XSSFSheet hsheet, List<String> listValue, int row, int column, String nameName) {
         //Put các tên danh mục vào column trong sheet danh mục ẩn
