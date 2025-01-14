@@ -99,7 +99,7 @@ public class OrderDTO extends Order implements Serializable {
 		dto.setAmountDiscount(order.getAmountDiscount() != null ? order.getAmountDiscount() : new BigDecimal(0));
 		dto.setTotalAmount(OrderUtils.calTotalAmount(order.getListOrderDetail(), BigDecimal.ZERO));
 		dto.setTotalAmountDiscount(OrderUtils.calTotalAmount(order.getListOrderDetail(), order.getAmountDiscount()));
-		dto.setTotalProduct(OrderUtils.countTotalItems(order.getListOrderDetail()));
+		dto.setTotalProduct(OrderUtils.countItemsEachOrder(order.getListOrderDetail()));
 		dto.setVoucherUsedCode(order.getVoucherUsedCode());
 		dto.setPaymentStatus(order.getPaymentStatus() != null && order.getPaymentStatus());
 		dto.setPaymentTime(order.getPaymentTime());

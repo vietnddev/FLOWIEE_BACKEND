@@ -2,7 +2,6 @@ package com.flowiee.pms.repository.sales;
 
 import com.flowiee.pms.entity.sales.Order;
 
-import com.flowiee.pms.utils.constants.CategoryType;
 import com.flowiee.pms.utils.constants.OrderStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -110,4 +109,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("from Order where customer.id = :customerId")
     List<Order> findByCustomer(@Param("customerId") Long customerId);
+
+    @Query("from Order where successfulDeliveryTime between :fromDate and :toDate")
+    List<Order> findBySuccessfulDeliveryTime(@Param("fromDate") LocalDateTime pFromDate, @Param("toDate") LocalDateTime pToDate);
 }

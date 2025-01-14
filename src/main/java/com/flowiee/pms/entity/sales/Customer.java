@@ -96,6 +96,10 @@ public class Customer extends BaseEntity implements Serializable {
 	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
 	List<GiftRedemption> giftRedemptionList;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+	List<CustomerDebt> customerDebtList;
+
 	public Customer(long id) {
 		super.id = id;
 	}

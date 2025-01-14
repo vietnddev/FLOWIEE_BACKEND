@@ -8,5 +8,5 @@ public interface RevenueStatisticsService {
 
     BigDecimal getWeekRevenue();
 
-    BigDecimal getMonthRevenue(LocalDate pFromMonth, LocalDate pToMonth);
+    BigDecimal getMonthRevenue(Integer pFMonth, Integer pFYear, Integer pTMonth, Integer pTYear);
 }

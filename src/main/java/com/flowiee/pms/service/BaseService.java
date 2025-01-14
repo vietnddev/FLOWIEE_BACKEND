@@ -8,6 +8,7 @@ import com.flowiee.pms.entity.system.Account;
 import com.flowiee.pms.entity.system.SystemConfig;
 import com.flowiee.pms.service.system.SystemLogService;
 import com.flowiee.pms.utils.CoreUtils;
+import com.flowiee.pms.utils.constants.FilterDate;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -51,6 +52,43 @@ public class BaseService {
             return false;
         }
         return true;
+    }
+
+    public LocalDateTime[] getFromDateToDate(FilterDate pFilterDate) {
+        LocalDateTime lvFromDate = null;
+        LocalDateTime lvEndDate = null;
+
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfToDay = today.atTime(LocalTime.MIN);
+        LocalDateTime endOfToDay = today.atTime(LocalTime.MAX);
+
+        YearMonth yearMonth = YearMonth.of(today.getYear(), today.getMonthValue());
+        LocalDateTime startDayOfMonth = yearMonth.atDay(1).atTime(LocalTime.MIN);
+        LocalDateTime endDayOfMonth = yearMonth.atEndOfMonth().atTime(LocalTime.MAX);
+
+        switch (pFilterDate) {
+            case ToDay:
+                lvFromDate = startOfToDay;
+                lvEndDate = endOfToDay;
+                break;
+            case PreviousDay:
+                lvFromDate = startOfToDay.minusDays(1);
+                lvEndDate = endOfToDay.minusDays(1);
+                break;
+            case SevenDaysAgo:
+                lvFromDate = startOfToDay.minusDays(7);
+                lvEndDate = endOfToDay;
+                break;
+            case ThisMonth:
+                lvFromDate = startDayOfMonth;
+                lvEndDate = endDayOfMonth;
+                break;
+            case PreviousMonth:
+                lvFromDate = startDayOfMonth.minusMonths(1);
+                lvEndDate = endDayOfMonth.minusMonths(1);
+        }
+
+        return new LocalDateTime[] {lvFromDate, lvEndDate};
     }
 
     public LocalDateTime[] getFromDateToDate(LocalDateTime pFromDate, LocalDateTime pToDate, String pFilterDate) {
